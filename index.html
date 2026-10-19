@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visual Search Experiment</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Offline Local Chart.js and BoxPlot plugin -->
+  <script src="chart.min.js"></script>
+  <script src="boxplot.min.js"></script>
+</head>
+<body>
+  <div id="app" class="app-container">
+
+    <!-- ========================================== -->
+    <!-- SECTION 1: CONFIGURATION SCREEN             -->
+    <!-- ========================================== -->
+    <section id="section-config" class="app-section active">
+      <div class="config-card">
+        <header class="config-header">
+          <div class="badge">Experiment Setup</div>
+          <h1>Visual Search Experiment Configuration</h1>
+          <p class="subtitle">Configure trial parameters, prime locations, response modalities, and set sizes before starting.</p>
+        </header>
+
+        <form id="config-form" class="config-form" onsubmit="return false;">
+          <!-- Trial Count & Structure -->
+          <div class="form-group-card">
+            <h2>1. Trial Settings</h2>
+            <div class="form-row">
+              <label for="num-trials">Total Number of Trials (2 – 1000):</label>
+              <div class="input-with-hint">
+                <input type="number" id="num-trials" name="numTrials" min="2" max="1000" value="63" required>
+                <span class="hint">Recommended: multiple of prime intervals (e.g., 63 for 3 & 7)</span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label for="set-size-mode">Set Size Mode:</label>
+              <select id="set-size-mode" name="setSizeMode">
+                <option value="preset-2">2 Set Sizes (Default: 16, 32)</option>
+                <option value="preset-3" selected>3 Set Sizes (Default: 8, 16, 32)</option>
+                <option value="fixed">Fixed Single Set Size (All trials identical)</option>
+              </select>
+            </div>
+
+            <!-- Dynamic Set Size Value Inputs -->
+            <div id="set-size-values-container" class="form-row">
+              <!-- Dynamically populated or toggled based on set-size-mode -->
+            </div>
+          </div>
+
+          <!-- Prime Location Parameters -->
+          <div class="form-group-card">
+            <h2>2. Primed Locations & Intervals</h2>
+            <p class="section-note">
+              Prime locations will be automatically placed outside the central 16 cells (rows 5–8, cols 5–8 in the 12×12 grid).
+            </p>
+
+            <div class="form-row">
+              <label for="prime-quadrant-condition">Quadrant Condition:</label>
+              <select id="prime-quadrant-condition" name="primeQuadrantCondition">
+                <option value="different" selected>Different Quadrants (Opposite diagonal: Top-Left & Bottom-Right, etc.)</option>
+                <option value="same">Same Quadrant (Both Prime 1 & Prime 2 in the same quadrant)</option>
+              </select>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-row">
+                <label for="prime1-interval">Prime 1 Recurrence Interval:</label>
+                <div class="input-with-hint">
+                  <input type="number" id="prime1-interval" name="prime1Interval" min="1" max="100" value="3" required>
+                  <span class="hint">Appears every N trials (e.g., 3rd, 6th, 9th...)</span>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <label for="prime2-interval">Prime 2 Recurrence Interval:</label>
+                <div class="input-with-hint">
+                  <input type="number" id="prime2-interval" name="prime2Interval" min="1" max="100" value="7" required>
+                  <span class="hint">Appears every N trials (e.g., 7th, 14th, 21st...)</span>
+                </div>
+              </div>
+            </div>
+            <div class="callout-info">
+              <strong>Double Prime rule:</strong> Trials that are common multiples (e.g., trial 21, 42) will show targets at both prime locations simultaneously with opposite orientations.
+            </div>
+          </div>
+
+          <!-- Response Modality & Keybindings -->
+          <div class="form-group-card">
+            <h2>3. Response Modality & Keybindings</h2>
+            
+            <div class="form-row">
+              <label for="response-mode">Response Mode:</label>
+              <select id="response-mode" name="responseMode">
+                <option value="keyboard" selected>Keyboard: Report T Orientation (Left vs Right)</option>
+                <option value="mouse">Mouse: Click on Target Location (Records streaming trajectory & orientation)</option>
+              </select>
+            </div>
+
+            <div id="keyboard-config-group">
+              <div class="form-row">
+                <label for="keybinding-preset">Keyboard Preset:</label>
+                <select id="keybinding-preset" name="keybindingPreset">
+                  <option value="arrows" selected>Arrow Keys: Left Arrow (Rotated Left) / Right Arrow (Rotated Right)</option>
+                  <option value="zm">Keys: 'Z' (Rotated Left) / 'M' (Rotated Right)</option>
+                  <option value="fj">Keys: 'F' (Rotated Left) / 'J' (Rotated Right)</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="mouse-config-info" class="callout-info hidden">
+              <strong>Mouse tracking active:</strong> Cursor position $(x, y)$ will be recorded at 60Hz from display onset until participant clicks the target.
+            </div>
+          </div>
+
+          <div class="config-actions">
+            <button type="button" id="btn-start-experiment" class="btn btn-primary btn-large">
+              Start Experiment
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 2: EXPERIMENT STAGE                 -->
+    <!-- ========================================== -->
+    <section id="section-experiment" class="app-section">
+      <!-- Top trial progress bar -->
+      <div class="experiment-top-bar">
+        <div class="trial-counter">
+          Trial <span id="exp-current-trial">1</span> of <span id="exp-total-trials">63</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div id="exp-progress-fill" class="progress-bar-fill"></div>
+        </div>
+        <div class="exp-instructions-hint" id="exp-controls-reminder">
+          Press [<span id="hint-key-left">←</span>] Left or [<span id="hint-key-right">→</span>] Right
+        </div>
+      </div>
+
+      <!-- Main Display Canvas & Grid -->
+      <div class="experiment-arena" id="experiment-arena">
+        <!-- Fixation Cross -->
+        <div id="fixation-cross" class="fixation-cross">+</div>
+
+        <!-- 12x12 Visual Search Display Board -->
+        <div id="search-grid" class="search-grid">
+          <!-- 144 cells generated via JavaScript -->
+        </div>
+
+        <!-- 1000ms Post-Trial Space Prompt -->
+        <div id="post-trial-flag-prompt" class="post-trial-overlay hidden">
+          <div class="flag-notice">
+            <span class="flag-key-badge">SPACE</span>
+            <span>Press Space within 1s to report a mistake or anomaly</span>
+          </div>
+        </div>
+
+        <!-- Modal Text Entry Dialog for Space Bar Flagging -->
+        <div id="comment-modal" class="modal-backdrop hidden">
+          <div class="modal-card">
+            <h3>Trial Note</h3>
+            <p>Did you make an accidental response or notice something unusual in this trial?</p>
+            <div class="quick-options">
+              <label><input type="radio" name="anomaly-type" value="mistake" checked> Accidental keypress / response error</label>
+              <label><input type="radio" name="anomaly-type" value="oddity"> Noticed oddity / pattern</label>
+              <label><input type="radio" name="anomaly-type" value="other"> Other</label>
+            </div>
+            <textarea id="trial-comment-input" rows="3" placeholder="Briefly describe what happened (optional)..."></textarea>
+            <div class="modal-buttons">
+              <button id="btn-submit-comment" class="btn btn-primary">Continue</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 3: POST-EXPERIMENT QUESTIONNAIRE    -->
+    <!-- ========================================== -->
+    <section id="section-questionnaire" class="app-section">
+      <div class="questionnaire-card">
+        <header class="config-header">
+          <div class="badge">Debrief Questionnaire</div>
+          <h1 id="questionnaire-step-title">Question 1 of 5</h1>
+          <p class="subtitle" id="questionnaire-step-subtitle">Please answer honestly based on your experience during the experiment.</p>
+        </header>
+
+        <div id="questionnaire-container" class="questionnaire-body">
+          <!-- Dynamically populated step-by-step questions -->
+        </div>
+
+        <div class="questionnaire-nav-actions">
+          <button type="button" id="btn-next-question" class="btn btn-primary btn-large">
+            Next Question
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 4: SUMMARY & DATA EXPORT            -->
+    <!-- ========================================== -->
+    <section id="section-summary" class="app-section">
+      <div class="summary-container">
+        <header class="summary-header">
+          <div class="badge badge-success">Completed</div>
+          <h1>Experiment Results Summary</h1>
+          <p class="subtitle">Review performance across trial conditions and download your complete trial-by-trial dataset.</p>
+        </header>
+
+        <!-- KPI Metrics Ribbon -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-label">Total Trials</div>
+            <div class="metric-value" id="kpi-total-trials">-</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Overall Accuracy</div>
+            <div class="metric-value" id="kpi-accuracy">-%</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Mean RT (Correct)</div>
+            <div class="metric-value" id="kpi-mean-rt">- ms</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Flagged Trials</div>
+            <div class="metric-value" id="kpi-flagged">-</div>
+          </div>
+        </div>
+
+        <!-- Performance Visualizations -->
+        <div class="charts-grid">
+          <div class="chart-card">
+            <h3>Reaction Time by Condition (Box & Whisker, ms)</h3>
+            <div class="chart-wrapper">
+              <canvas id="chart-rt-condition"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h3>Accuracy by Condition (%)</h3>
+            <div class="chart-wrapper">
+              <canvas id="chart-acc-condition"></canvas>
+            </div>
+          </div>
+          <div class="chart-card full-width">
+            <h3>Reaction Time by Set Size (Search Slope, ms)</h3>
+            <div class="chart-wrapper">
+              <canvas id="chart-rt-setsize"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Download Buttons -->
+        <div class="export-actions">
+          <button id="btn-download-csv" class="btn btn-primary btn-large">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download CSV Data File
+          </button>
+          <button id="btn-download-mouse-csv" class="btn btn-secondary btn-large hidden">
+            Download Mouse Trajectory Data (CSV)
+          </button>
+          <button id="btn-restart" class="btn btn-outline">
+            Configure New Experiment
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

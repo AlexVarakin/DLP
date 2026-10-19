@@ -1,0 +1,747 @@
+/* =========================================================
+   Visual Search Experiment - Modern Design System & Styles
+   ========================================================= */
+
+:root {
+  --bg-primary: #0a0d14;
+  --bg-card: #121824;
+  --bg-card-subtle: #192233;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-focus: #3b82f6;
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  --accent-primary: #3b82f6;
+  --accent-primary-hover: #2563eb;
+  --accent-secondary: #06b6d4;
+  --accent-success: #10b981;
+  --accent-warning: #f59e0b;
+  --accent-danger: #ef4444;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Section visibility toggle */
+.app-section {
+  display: none;
+  width: 100%;
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+.app-section.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   Badges, Headers & Buttons
+   ========================================================= */
+
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  background: rgba(59, 130, 246, 0.15);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  margin-bottom: 0.75rem;
+}
+
+.badge-success {
+  color: var(--accent-success);
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.config-header, .summary-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.config-header h1, .summary-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-hover));
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--bg-card-subtle);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.btn-outline:hover {
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
+}
+
+.btn-large {
+  padding: 0.9rem 2.2rem;
+  font-size: 1.05rem;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* =========================================================
+   Section 1: Configuration Styles
+   ========================================================= */
+
+.config-card, .questionnaire-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  box-shadow: var(--shadow-lg);
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.form-group-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group-card h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-note {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.form-row {
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-row:last-child {
+  margin-bottom: 0;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+input[type="number"],
+input[type="text"],
+select,
+textarea {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.9rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.input-with-hint {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.callout-info {
+  background: rgba(59, 130, 246, 0.08);
+  border-left: 3px solid var(--accent-primary);
+  padding: 0.75rem 1rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 1rem;
+}
+
+.callout-info strong {
+  color: var(--text-primary);
+}
+
+.config-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+/* =========================================================
+   Section 2: Experiment Visual Search Stage
+   ========================================================= */
+
+.experiment-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 650px;
+  margin: 0 auto 1.5rem auto;
+  background: var(--bg-card);
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.9rem;
+}
+
+.trial-counter {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.progress-bar-bg {
+  flex: 1;
+  max-width: 200px;
+  height: 6px;
+  background: var(--bg-primary);
+  border-radius: 999px;
+  margin: 0 1rem;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent-primary);
+  border-radius: 999px;
+  transition: width 0.2s ease;
+}
+
+.exp-instructions-hint {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.exp-instructions-hint span {
+  color: var(--accent-secondary);
+  font-weight: 600;
+}
+
+/* Arena & 12x12 Grid */
+.experiment-arena {
+  position: relative;
+  width: 620px;
+  height: 620px;
+  margin: 0 auto;
+  background: #000000;
+  border: 2px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+}
+
+.fixation-cross {
+  font-size: 38px;
+  color: #ffffff;
+  font-weight: 300;
+  user-select: none;
+  font-family: var(--font-sans);
+  pointer-events: none;
+}
+
+.search-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(12, 1fr);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: auto;
+}
+
+.grid-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+/* Item rendering: SVGs for precision geometry */
+.search-item {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.05s ease;
+}
+
+.search-item svg {
+  width: 100%;
+  height: 100%;
+  stroke: #ffffff;
+  stroke-width: 3.5;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+/* Rotations */
+.rot-0   { transform: rotate(0deg); }
+.rot-90  { transform: rotate(90deg); }
+.rot-180 { transform: rotate(180deg); }
+.rot-270 { transform: rotate(270deg); }
+
+/* Post trial 1000ms space prompt overlay */
+.post-trial-overlay {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  pointer-events: none;
+  animation: pulseNotice 1s infinite alternate;
+}
+
+@keyframes pulseNotice {
+  from { opacity: 0.8; transform: translateX(-50%) scale(0.98); }
+  to { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+.flag-notice {
+  background: rgba(18, 24, 36, 0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-subtle);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.flag-key-badge {
+  background: var(--bg-card-subtle);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding: 0.15rem 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Comment Modal */
+.modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  width: 88%;
+  max-width: 440px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-card h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.modal-card p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.quick-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.quick-options label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* =========================================================
+   Section 3: Post-Experiment Questionnaire Styles
+   ========================================================= */
+
+.questionnaire-body {
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
+.question-prompt {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.question-textarea {
+  width: 100%;
+  height: 140px;
+  padding: 1rem;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+/* Slider Styles */
+.slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1rem 0.5rem;
+}
+
+.slider-scale-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.slider-scale-labels span.left {
+  color: var(--accent-success);
+}
+
+.slider-scale-labels span.right {
+  color: var(--accent-danger);
+}
+
+.slider-input {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  background: var(--bg-card-subtle);
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+
+.slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
+  cursor: pointer;
+}
+
+.slider-current-value {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-secondary);
+}
+
+/* 12x12 Selection Grid in Questionnaire */
+.question-grid-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.question-search-grid {
+  width: 360px;
+  height: 360px;
+  background: #000000;
+  border: 2px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(12, 1fr);
+  gap: 1px;
+  padding: 2px;
+}
+
+.q-grid-cell {
+  background: #111622;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  user-select: none;
+}
+
+.q-grid-cell:hover:not(.selected) {
+  background: #2563eb55;
+}
+
+.q-grid-cell.selected {
+  background: var(--accent-primary);
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.8);
+}
+
+.grid-selection-tracker {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.selection-order-list {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.selection-chip {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--accent-primary);
+  color: var(--accent-secondary);
+  border-radius: var(--radius-sm);
+  padding: 0.2rem 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.questionnaire-nav-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* =========================================================
+   Section 4: Summary Screen Styles
+   ========================================================= */
+
+.summary-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.metric-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  text-align: center;
+}
+
+.metric-label {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.metric-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.chart-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+}
+
+.chart-card.full-width {
+  grid-column: span 2;
+}
+
+.chart-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: 250px;
+}
+
+.export-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1.5rem 0;
+}
