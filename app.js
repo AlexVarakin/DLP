@@ -118,12 +118,47 @@ function setupConfigListeners() {
 
   document.getElementById('btn-start-experiment').addEventListener('click', () => {
     saveConfigFromUI();
+    updateInstructionsUI();
+    showSection('section-instructions');
+  });
+
+  document.getElementById('btn-begin-trials').addEventListener('click', () => {
     initializeExperiment();
   });
 
   document.getElementById('btn-next-question').addEventListener('click', () => {
     handleQuestionnaireNext();
   });
+}
+
+function updateInstructionsUI() {
+  const isMouse = (State.config.responseMode === 'mouse');
+  const reminderBox = document.getElementById('instr-keys-reminder-box');
+  const leftKeyBadge = document.getElementById('instr-key-left');
+  const rightKeyBadge = document.getElementById('instr-key-right');
+  const reminderKeysText = document.getElementById('instr-reminder-keys-text');
+
+  if (isMouse) {
+    leftKeyBadge.textContent = 'Click on Target';
+    rightKeyBadge.textContent = 'Click on Target';
+    reminderBox.innerHTML = `
+      <div class="reminder-icon">🖱️</div>
+      <div>
+        <strong>Mouse Response Reminder:</strong>
+        <p>Please keep your hand on your mouse. Click directly on the target <strong>T</strong> as quickly and accurately as possible.</p>
+      </div>
+    `;
+  } else {
+    leftKeyBadge.textContent = State.keys.leftLabel;
+    rightKeyBadge.textContent = State.keys.rightLabel;
+    reminderBox.innerHTML = `
+      <div class="reminder-icon">👉</div>
+      <div>
+        <strong>Finger Placement Reminder:</strong>
+        <p>Please place your fingers on the <span id="instr-reminder-keys-text"><strong>${State.keys.leftLabel}</strong> and <strong>${State.keys.rightLabel}</strong></span> keys now so you are ready to respond as quickly and accurately as possible.</p>
+      </div>
+    `;
+  }
 }
 
 function renderSetSizeConfigInputs() {

@@ -117,10 +117,74 @@
 
           <div class="config-actions">
             <button type="button" id="btn-start-experiment" class="btn btn-primary btn-large">
-              Start Experiment
+              Continue to Instructions
             </button>
           </div>
         </form>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 1B: PARTICIPANT INSTRUCTIONS SCREEN -->
+    <!-- ========================================== -->
+    <section id="section-instructions" class="app-section">
+      <div class="config-card instructions-card">
+        <header class="config-header">
+          <div class="badge">Instructions</div>
+          <h1>Visual Search Task</h1>
+          <p class="subtitle">Please read the instructions carefully before beginning.</p>
+        </header>
+
+        <div class="instructions-content">
+          <div class="instruction-block">
+            <h3>Your Goal: Find the Rotated 'T'</h3>
+            <p>On each trial, a grid of letters will appear. Your task is to quickly and accurately search for the letter <strong>T</strong> among distractor letters (rotated <strong>L</strong>'s).</p>
+          </div>
+
+          <div class="instruction-targets-demo">
+            <div class="target-card">
+              <div class="demo-symbol-box">
+                <svg viewBox="0 0 24 24" class="demo-svg rot-270"><line x1="3" y1="5" x2="21" y2="5"/><line x1="12" y1="5" x2="12" y2="21"/></svg>
+              </div>
+              <div class="target-card-caption">
+                <strong>T rotated Left (90°)</strong>
+                <span class="key-badge-highlight" id="instr-key-left">← Left Arrow</span>
+              </div>
+            </div>
+
+            <div class="target-card">
+              <div class="demo-symbol-box">
+                <svg viewBox="0 0 24 24" class="demo-svg rot-90"><line x1="3" y1="5" x2="21" y2="5"/><line x1="12" y1="5" x2="12" y2="21"/></svg>
+              </div>
+              <div class="target-card-caption">
+                <strong>T rotated Right (90°)</strong>
+                <span class="key-badge-highlight" id="instr-key-right">→ Right Arrow</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="instruction-callout reminder-callout" id="instr-keys-reminder-box">
+            <div class="reminder-icon">👉</div>
+            <div>
+              <strong>Finger Placement Reminder:</strong>
+              <p>Please place your fingers on the <span id="instr-reminder-keys-text">Left and Right Arrow keys</span> now so you are ready to respond as quickly and accurately as possible.</p>
+            </div>
+          </div>
+
+          <div class="instruction-callout flag-callout">
+            <div class="reminder-icon">⌨️</div>
+            <div>
+              <strong>Mistake or Display Anomaly?</strong>
+              <p>If you make an accidental mistake on a trial or notice anything unusual in the display, press the <strong class="space-badge">SPACE BAR</strong> immediately (within 1 second) after responding to leave a quick note.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="config-actions">
+          <button type="button" id="btn-begin-trials" class="btn btn-primary btn-large">
+            Start Experiment
+          </button>
+        </div>
       </div>
     </section>
 
