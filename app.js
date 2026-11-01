@@ -245,10 +245,10 @@ function saveConfigFromUI() {
 
   // Update Experiment HUD instructions
   if (State.config.responseMode === 'keyboard') {
-    document.getElementById('exp-controls-reminder').innerHTML = 
+    document.getElementById('exp-controls-reminder').innerHTML =
       `Press [<span>${State.keys.leftLabel}</span>] for Left or [<span>${State.keys.rightLabel}</span>] for Right`;
   } else {
-    document.getElementById('exp-controls-reminder').innerHTML = 
+    document.getElementById('exp-controls-reminder').innerHTML =
       `Click directly on the target [<span>T</span>] with your mouse`;
   }
 }
@@ -762,7 +762,7 @@ function buildQuestionnaireSequence() {
     {
       id: 'prime_location_click',
       title: 'Location Identification',
-      prompt: 'Can you click on the location(s) where the target appeared most? Click on them in the order in which you think they contained the target most.',
+      prompt: 'Can you click on the locations where the target appeared most? If you only think one location was more likely to contain the target, click on only one location. If you think two or more locations were likely to have a target, click on them in order of likeliness (most likely first, least likely last',
       type: 'grid_selection'
     }
   ];
@@ -811,8 +811,8 @@ function renderCurrentQuestion() {
     const sliderBox = document.createElement('div');
     sliderBox.className = 'slider-group';
 
-    const currentValue = (q.id === 'multi_target_noticed') 
-      ? State.questionnaire.answers.multi_target_noticed_rating 
+    const currentValue = (q.id === 'multi_target_noticed')
+      ? State.questionnaire.answers.multi_target_noticed_rating
       : State.questionnaire.answers.prime_location_noticed_rating;
 
     sliderBox.innerHTML = `
